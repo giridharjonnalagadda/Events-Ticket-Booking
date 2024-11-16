@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Event Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #f1faee;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            padding: 40px 0;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #3a3a3a;
+            margin-bottom: 30px;
+        }
+        .table-container {
+            margin-top: 20px;
+        }
+        .btn {
+            width: 120px;
+        }
+        .btn-danger {
+            background-color: #e63946;
+            border-color: #e63946;
+        }
+        .btn-danger:hover {
+            background-color: #d32f2f;
+            border-color: #d32f2f;
+        }
+        .btn-primary {
+            background-color: #0066cc;
+            border-color: #0066cc;
+        }
+        .btn-primary:hover {
+            background-color: #004c99;
+            border-color: #004c99;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px; /* Adds space between buttons */
+        }
+    </style>
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+    crossorigin="anonymous">
+</head>
+<body>
+
+    <div>
+        <nav
+          class="navbar navbar-light bg-dark justify-content-between text-light px-5"
+          style="height: 100px"
+        >
+          <a class="navbar-brand text-light">Event Management</a>
+          <form class="form-inline">
+            <a
+              href="/indx"
+              class="btn btn-outline-primary my-2 my-sm-0 bg-primary text-white"
+              style="margin-right: 30px; position: relative"
+              type="submit"
+              >Home</a
+            >
+            <!-- <a
+              href="/hii"
+              class="btn btn-outline-primary my-2 my-sm-0 bg-primary text-white"
+              type="submit"
+              >Events</a
+            > -->
+            <a
+              href="/booking_history"
+              class="btn btn-outline-primary my-2 my-sm-0 bg-primary text-white"
+              type="submit"
+              >History</a
+            >
+            <a
+              href="/logout"
+              class="btn btn-outline-danger my-2 my-sm-0 bg-danger text-white"
+              type="submit"
+              >Logout</a
+            >
+          </form>
+        </nav>
+      </div>
+
+    <div class="container">
+        <h1 class="text-center">Admin - Event Management</h1>
+
+        <!-- Button to Add New Event
+        <div class="text-center mb-4">
+            <a href="/addeventform" class="btn btn-primary btn-lg">Add Event</a>
+        </div> -->
+
+        <!-- Table to Display Events -->
+        <div class="table-container">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Event Type</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Duration</th>
+                        <th>Event Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <td>{{ event['EventName'] }}</td>
+                            <td>{{ event['EventType'] }}</td>
+                            <td>{{ event['EventDate'] }}</td>
+                            <td>{{ event['StartTime'] }}</td>
+                            <td>{{ event['EndTime'] }}</td>
+                            <td>{{ event['Duration'] }} hours</td>
+                            <td><img src="{{ event['EventImage'] }}" alt="Event Image" width="100"></td>
+                            <td>
+                                <!-- Wrap buttons in a div with class button-group -->
+                                <div class="button-group">
+                                    <form action="/deleteevent/{{ event['_id'] }}" method="POST">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                    <a href="/updateevent/{{ event['_id'] }}" class="btn btn-primary">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

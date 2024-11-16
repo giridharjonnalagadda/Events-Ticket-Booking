@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Management</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+    <style>
+      body {
+        background-color: #a9def9;
+        font-family: "Bahnschrift SemiBold", sans-serif;
+      }
+      .form-container {
+        max-width: 450px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      .form-container img {
+        height: 250px;
+        width: 100%;
+        margin-bottom: 30px;
+        border-radius: 5px;
+      }
+      .form-container h1 {
+        font-weight: bold;
+        margin-bottom: 30px;
+      }
+      .form-container label {
+        font-size: 20px;
+        font-weight: 600;
+        display: block;
+        text-align: left;
+        margin-top: 15px;
+      }
+      .form-container input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #000;
+        border-radius: 5px;
+      }
+      .form-container button {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .form-container button:hover {
+        background-color: #0056b3;
+      }
+      .error-messages {
+        color: red;
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+      .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .card img {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+      }
+      .card-header {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .card-body {
+        padding: 15px;
+      }
+      /* Styling the filter box */
+      .navbar .filter-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .navbar .filter-container select {
+        padding: 5px 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar with select box -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark justify-content-between text-light px-5" style="height: 100px">
+      <a class="navbar-brand text-light">Event Management</a>
+      <h1>Hi {{username}}</h1>
+      <form class="form-inline d-flex">
+        
+        
+
+        <!-- Filter select box in the navbar -->
+        <div class="filter-container">
+          <label for="navbarEventTypeFilter" class="text-white">Filter:</label>
+          <select id="navbarEventTypeFilter" class="form-select" onchange="filterEvents()">
+            <option value="all">All Event Types</option>
+            {% for event in events %}
+              <option value="{{ event['EventType'] }}">{{ event['EventType'] }}</option>
+            {% endfor %}
+          </select>
+          <a
+            href="/logout"
+            class="btn btn-outline-danger my-2 my-sm-0 bg-danger text-white"
+            type="submit"
+            >Logout</a
+          >
+        </div>
+      </form>
+    </nav>
+
+    <!-- Display status message -->
+    {% if status %}
+      <div class="alert alert-success" role="alert">{{ status }}</div>
+    {% endif %}
+
+    <div class="container">
+      <h1 class="text-center">Event Details</h1>
+
+      <!-- Cards for displaying event details -->
+      <div class="card-container" id="eventCardsContainer">
+        {% for event in events %}
+          <form action="/eventdetails/{{ event['_id'] }}" method="GET" class="event-card" data-event-type="{{ event['EventType'] }}">
+            <div class="card">
+              <img src="{{ event['EventImage'] }}" class="card-img-top" alt="{{ event['EventName'] }} Image" />
+              <div class="card-header">{{ event['EventName'] }}</div>
+              <div class="card-body">
+                <h6 class="card-subtitle"><strong>Event type:</strong> {{ event['EventType'] }}</h6>
+                <p class="card-text">
+                  <strong>Date:</strong> {{ event['EventDate'] }}<br />
+                  <strong>Start Time:</strong> {{ event['StartTime'] }}<br />
+                  <strong>End Time:</strong> {{ event['EndTime'] }}<br />
+                  <strong>Duration:</strong> {{ event['Duration'] }}
+                </p>
+                <button type="submit" class="btn btn-primary">View Details</button>
+              </div>
+            </div>
+          </form>
+        {% endfor %}
+      </div>
+    </div>
+
+    <script>
+      // JavaScript function to filter events based on selected event type from the navbar
+      function filterEvents() {
+        const selectedEventType = document.getElementById('navbarEventTypeFilter').value;
+        const eventCards = document.querySelectorAll('.event-card');
+
+        eventCards.forEach((card) => {
+          const eventType = card.getAttribute('data-event-type');
+          if (selectedEventType === 'all' || eventType === selectedEventType) {
+            card.style.display = 'block';  // Show event
+          } else {
+            card.style.display = 'none';   // Hide event
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

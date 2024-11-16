@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Details</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #a9def9; /* Light blue background for the page */
+        font-family: "Bahnschrift SemiBold", sans-serif;
+        padding: 20px;
+      }
+
+      .navbar {
+        background-color: #343a40; /* Dark background for the navbar */
+      }
+
+      .navbar-brand {
+        font-size: 1.5rem;
+        color: #fff;
+      }
+
+      .navbar a {
+        color: #fff;
+      }
+
+      /* Flexbox container to align the event details and booking form side by side */
+      .event-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      /* Styling for the Event Details section */
+      .event-details {
+        flex: 0 0 60%; /* 60% width for event details */
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Styling for the Booking Form section */
+      .booking-form {
+        flex: 0 0 35%; /* 35% width for the form */
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Image styles */
+      .event-details img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      /* Form elements styling */
+      .form-group label {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .form-control {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      .btn-book {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+
+      .btn-book:hover {
+        background-color: #0056b3;
+      }
+
+      /* Add some margin and make button stand out */
+      .btn-book {
+        margin-top: 20px;
+      }
+
+      /* Responsive design adjustments */
+      @media (max-width: 768px) {
+        .event-container {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .event-details,
+        .booking-form {
+          flex: 0 0 100%; /* Stack vertically on smaller screens */
+        }
+
+        /* Ensure form button fits nicely on small screens */
+        .btn-book {
+          font-size: 1rem;
+        }
+      }
+    </style>
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+    crossorigin="anonymous">
+  </head>
+  <body>
+    <div>
+      <nav
+        class="navbar navbar-light bg-dark justify-content-between text-light px-5"
+        style="height: 100px"
+      >
+        <a class="navbar-brand text-light">Event Management</a>
+        <form class="form-inline">
+          <a
+            href="/hii"
+            class="btn btn-outline-danger my-2 my-sm-0 bg-danger text-white"
+            style="margin-right: 30px; position: relative"
+            type="submit"
+            >Home</a
+          >
+          <!-- <a
+            href="/admin/events"
+            class="btn btn-outline-primary my-2 my-sm-0 bg-primary text-white"
+            type="submit"
+            >Events Info</a
+          > -->
+          <a
+            href="/logout"
+            class="btn btn-outline-primary my-2 my-sm-0 bg-primary text-white"
+            type="submit"
+            >Logout</a
+          >
+        </form>
+      </nav>
+    </div>
+
+    <!-- Event Details and Booking Form Section -->
+    <div class="container event-container">
+      <!-- Event Details Section -->
+      <div class="event-details">
+        <h1 class="text-center">{{ eventdetail['EventName'] }}</h1>
+        <img
+          src="{{ eventdetail['EventImage'] }}"
+          class="card-img-top"
+          alt="Event Image"
+        />
+        <div>
+          <p><strong>Type:</strong> {{ eventdetail['EventType'] }}</p>
+          <p><strong>Date:</strong> {{ eventdetail['EventDate'] }}</p>
+          <p><strong>Start Time:</strong> {{ eventdetail['StartTime'] }}</p>
+          <p><strong>End Time:</strong> {{ eventdetail['EndTime'] }}</p>
+          <p><strong>Duration:</strong> {{ eventdetail['Duration'] }} hours</p>
+        </div>
+        <form action="/eventdetailss/{{ eventdetail['_id'] }}" method="POST">
+          
+            <button type="submit" class="btn-book">Book Now</button>
+          </form>
+          <p>{{status}}</p>
+      </div>
+
+      
+    </div>
+  </body>
+</html>
